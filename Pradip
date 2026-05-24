@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="google-site-verification" content="gh0PHL6tYcV8t7XPjZjqzmK0zJOZbTvtsLzUhg9Csl4" />
+    <meta name="google-site-verification" content="google9978c86284749d6f.html" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Social Market</title>
+    <style>
+        /* Base Setup matching the screenshot color scheme */
+        :root {
+            --primary-purple: #4A154B; 
+            --light-bg: #F4F5F7;
+            --text-dark: #333333;
+            --card-bg: #FFFFFF;
+            --google-red: #DB4437;
+            --fb-blue: #1877F2;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ---------------------------------- */
+        /* HEADER / NAVIGATION BAR            */
+        /* ---------------------------------- */
+        .top-navbar {
+            background: var(--card-bg);
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .nav-icon-btn {
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f2;
+        }
+
+        .brand-logo-circle {
+            background: var(--primary-purple);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        /* ---------------------------------- */
+        /* NEW: BEAUTIFUL BUY/SELL BRAND LOGO */
+        /* ---------------------------------- */
+        .market-logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px auto;
+            width: 85px;
+            height: 85px;
+            background: linear-gradient(135deg, var(--primary-purple), #7b2cbf);
+            border-radius: 24px;
+            box-shadow: 0 8px 20px rgba(74, 21, 75, 0.25);
+            position: relative;
+            /* Pulse animation to make the logo look alive */
+            animation: logoPulse 2.5s infinite ease-in-out;
+        }
+
+        /* Arrows representing trading (buying & selling) */
+        .logo-arrow {
+            position: absolute;
+            font-size: 32px;
+            color: white;
+            font-weight: bold;
+        }
+        .arrow-buy { transform: translate(-10px, -10px); }
+        .arrow-sell { transform: translate(10px, 10px) rotate(180deg); }
+        .logo-basket { font-size: 28px; z-index: 2; color: white; }
+
+        /* ---------------------------------- */
+        /* SCREEN 1: LOGIN APP INTERFACE      */
+        /* ---------------------------------- */
+        .app-container {
+            margin-top: 90px;
+            margin-bottom: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 0 20px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 420px;
+            padding: 35px 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            text-align: center;
+            margin-bottom: 15px;
+            border: 1px solid #eef0f2;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .login-card h2 {
+            color: var(--primary-purple);
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .login-card p {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 16px;
+            background: #F4F5F7;
+            border: 1px solid #E2E4E8;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-purple);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(74, 21, 75, 0.15);
+        }
+
+        .signin-btn {
+            width: 100%;
+            background: var(--primary-purple);
+            color: white;
+            padding: 16px;
+            font-size: 15px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            margin-top: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .signin-btn:hover {
+            background: #380f39;
+            box-shadow: 0 4px 12px rgba(74, 21, 75, 0.2);
+        }
+
+        /* Divider line between form and social logins */
+        .divider {
+            margin: 25px 0;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #aaa;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e2e4e8;
+        }
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
+
+        /* NEW: SOCIAL LOGIN BUTTONS */
+        .social-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .social-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid #e2e4e8;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: white;
+            transition: all 0.2s ease;
+        }
+
+        .social-btn-google {
+            color: #333;
+            animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+        .social-btn-google:hover {
+            background: #f8f9fa;
+            border-color: #ccc;
+        }
+
+        .social-btn-fb {
+            background-color: var(--fb-blue);
+            color: white;
+            border: none;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+        .social-btn-fb:hover {
+            background-color: #145dbf;
+            box-shadow: 0 4px 12px rgba(24, 119, 242, 0.2);
+        }
+
+        .social-icon {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .forgot-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--primary-purple);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .register-card {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            border: 1px solid #eef0f2;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .register-card a {
+            color: var(--primary-purple);
+            text-decoration: none;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        /* ---------------------------------- */
+        /* SCREEN 2: THE COMPACT MARKETPLACE  */
+        /* ---------------------------------- */
+        .market-container {
+            margin-top: 80px;
+            margin-bottom: 90px;
+            padding: 0 20px;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: pageTransition 0.5s ease-out;
+        }
+
+        .seller-form-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        .seller-form-card h3 {
+            color: var(--primary-purple);
+            margin-bottom: 15px;
+        }
+
+        .upload-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .post-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            outline: none;
+            margin-bottom: 10px;
+        }
+
+        .publish-btn {
+            background: #00a400;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .market-feed-title {
+            color: var(--text-dark);
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .item-card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            animation: slideUp 0.4s ease;
+        }
+
+        .item-media {
+            width: 100%;
+            height: 280px;
+            background: #eaeaea;
+        }
+
+        .item-media img, .item-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-info {
+            padding: 15px;
+        }
+
+        .price-tag {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--primary-purple);
+        }
+
+        /* ---------------------------------- */
+        /* BOTTOM NAVIGATION MENU BAR         */
+        /* ---------------------------------- */
+        .bottom-navbar {
+            background: var(--card-bg);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 65px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #666;
+            font-size: 11px;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .nav-item.active {
+            color: var(--primary-purple);
+            font-weight: bold;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 3px;
+        }
+
+        .chat-bubble-avatar {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: var(--primary-purple);
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(74, 21, 75, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 99;
+        }
+
+        /* ---------------------------------- */
+        /* CSS ANIMATIONS KEYFRAMES           */
+        /* ---------------------------------- */
+        @keyframes slideUp {
+            0% { transform: translateY(40px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pageTransition {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes logoPulse {
+            0% { transform: scale(1); box-shadow: 0 8px 20px rgba(74, 21, 75, 0.25); }
+            50% { transform: scale(1.04); box-shadow: 0 12px 28px rgba(74, 21, 75, 0.4); }
+            100% { transform: scale(1); box-shadow: 0 8px 20px rgba(74, 21, 75, 0.25); }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-navbar">
+        <button class="nav-icon-btn">☰</button>
+        <div class="brand-logo-circle">♻️</div>
+        <button class="nav-icon-btn">🔍</button>
+    </header>
+
+    <div id="loginScreen" class="app-container">
+        
+        <div class="login-card">
+            
+            <div class="market-logo-container">
+                <div class="logo-arrow arrow-buy">➔</div>
+                <div class="logo-basket">🛒</div>
+                <div class="logo-arrow arrow-sell">➔</div>
+            </div>
+
+            <h2>Sign In</h2>
+            <p>Please enter login information</p>
+            
+            <form id="authForm">
+                <div class="input-group">
+                    <input type="text" id="username" placeholder="Please enter username" required autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="Please enter a password" required>
+                </div>
+                
+                <button type="submit" class="signin-btn">SIGN IN</button>
+            </form>
+
+            <div class="divider">Or Connect Via</div>
+
+            <div class="social-container">
+                <button class="social-btn social-btn-google" onclick="mockSocialLogin('Google')">
+                    <span class="social-icon" style="color: #4285F4;">G</span> Continue with Google
+                </button>
+                <button class="social-btn social-btn-fb" onclick="mockSocialLogin('Facebook')">
+                    <span class="social-icon">f</span> Continue with Facebook
+                </button>
+            </div>
+            
+            <a href="#" class="forgot-link">Forgot password?</a>
+        </div>
+
+        <div class="register-card">
+            Do not have an account? <a href="#">Register</a>
+        </div>
+    </div>
+
+    <div id="marketScreen" class="market-container hidden">
+        
+        <div class="seller-form-card">
+            <h3>List Your Item</h3>
+            <form id="marketForm">
+                <input type="text" id="itemName" class="post-input" placeholder="Product name..." required>
+                <input type="number" id="itemPrice" class="post-input" placeholder="Price ($)..." required>
+                
+                <div class="upload-row">
+                    <label style="font-size:13px; color:#555; display:block; margin-bottom:5px;">Upload Media:</label>
+                    <input type="file" id="itemMedia" accept="image/*,video/*" required>
+                </div>
+                
+                <button type="submit" class="publish-btn">Publish Product</button>
+            </form>
+        </div>
+
+        <h3 class="market-feed-title">Recent Feed Items</h3>
+        <div id="feedWrapper">
+            
+            <div class="item-card">
+                <div class="item-media">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600" alt="shoes">
+                </div>
+                <div class="item-info">
+                    <div class="price-tag">$120</div>
+                    <p style="color:#555; margin-top:5px; font-size:15px;">Limited Edition Air Athletic Sneakers</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="chat-bubble-avatar">💬</div>
+
+    <nav class="bottom-navbar">
+        <button class="nav-item active">
+            <span class="nav-icon">🏠</span>
+            <span>HOME</span>
+        </button>
+        <button class="nav-item">
+            <span class="nav-icon">📦</span>
+            <span>PRODUCT</span>
+        </button>
+        <button class="nav-item">
+            <span class="nav-icon">🏦</span>
+            <span>RECHARGE</span>
+        </button>
+        <button class="nav-item">
+            <span class="nav-icon">🛒</span>
+            <span>ORDER</span>
+        </button>
+        <button class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>MY PROFILE</span>
+        </button>
+    </nav>
+
+    <script>
+        // Normal Sign-In Submit
+        document.getElementById('authForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            goToMarketplace();
+        });
+
+        // Social Button Direct Login Click Simulation
+        function mockSocialLogin(platform) {
+            alert("Logging in smoothly via " + platform + " account...");
+            goToMarketplace();
+        }
+
+        function goToMarketplace() {
+            // Hide login screen
+            document.getElementById('loginScreen').classList.add('hidden');
+            // Display hidden marketplace feed
+            document.getElementById('marketScreen').classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        // Add user items dynamically to the market feed
+        document.getElementById('marketForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('itemName').value;
+            const price = document.getElementById('itemPrice').value;
+            const mediaFile = document.getElementById('itemMedia').files[0];
+            
+            if(!mediaFile) return;
+            
+            const mediaUrl = URL.createObjectURL(mediaFile);
+            const isVideo = mediaFile.type.startsWith('video/');
+            
+            const newPostCard = document.createElement('div');
+            newPostCard.classList.add('item-card');
+            
+            let mediaElement = `<img src="${mediaUrl}">`;
+            if(isVideo) {
+                mediaElement = `<video src="${mediaUrl}" controls autoplay muted loop></video>`;
+            }
+            
+            newPostCard.innerHTML = `
+                <div class="item-media">
+                    ${mediaElement}
+                </div>
+                <div class="item-info">
+                    <div class="price-tag">$${price}</div>
+                    <p style="color:#555; margin-top:5px; font-size:15px;">${name}</p>
+                </div>
+            `;
+            
+            const wrapper = document.getElementById('feedWrapper');
+            wrapper.insertBefore(newPostCard, wrapper.firstChild);
+            
+            document.getElementById('marketForm').reset();
+        });
+    </script>
+</body>
+</html>
